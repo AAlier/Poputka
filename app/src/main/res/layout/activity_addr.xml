@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.pick_addr.PickAddressActivity"
+                tools:layout="@layout/item_autocomplete" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container.autocomplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="60dp"
+            android:layout_marginLeft="@dimen/margin_horizontal"
+            android:layout_marginRight="60dp"
+            android:layout_marginStart="@dimen/margin_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <AutoCompleteTextView
+                android:id="@+id/place_autocomplete_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:completionThreshold="1"
+                android:hint="@string/enter_place"
+                android:imeOptions="actionDone"
+                android:padding="@dimen/margin_8"
+                android:singleLine="true" />
+
+            <ImageButton
+                android:id="@+id/place_clear_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_12"
+                android:layout_weight="1"
+                android:background="@null"
+                android:contentDescription="@string/place_autocomplete_clear_button"
+                android:padding="@dimen/place_autocomplete_button_padding"
+                android:src="@drawable/places_ic_clear" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

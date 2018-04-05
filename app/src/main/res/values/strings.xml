@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Poputchik</string>
+    <string name="error">Ошибка</string>
+    <string name="loading">Загрузка…</string>
+
+    <string name="request_setting_permissions">Вы отключили некоторые разрешения, включите их в настройках</string>
+    <string name="call">Позвонить</string>
+    <string name="show_list">Показать лист</string>
+    <string name="drivers">Водители</string>
+    <string name="riders">Пешеходы</string>
+    <string name="no_data">Данных нет</string>
+    <string name="time">Время: %s</string>
+    <string name="start_addr">Откуда: %s</string>
+    <string name="end_addr">Куда: %s</string>
+    <string name="descr">Описание: %s</string>
+    <string name="send">Отправить</string>
+    <string name="enter_name">Введите имя</string>
+    <string name="enter_phone">Введите номер телефона</string>
+    <string name="enter_available_place">Доступных мест</string>
+    <string name="rider">Пешеход</string>
+    <string name="driver">Водитель</string>
+    <string name="enter_place">Введите адресс</string>
+    <string name="next">Check</string>
+    <string name="enter_descrip">Добавьте описание</string>
+    <string name="add">Добавить</string>
+
+    <string name="start_point">Точка отправки</string>
+    <string name="end_point">Конечный пункт</string>
+    <string name="start_time">Время отбытия</string>
+    <string name="name">Имя: %s</string>
+    <string name="available">Свободных мест: %d</string>
+    <string name="filter">Фильтер</string>
+
+</resources>
