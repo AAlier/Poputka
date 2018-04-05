@@ -22,7 +22,8 @@ interface PostContract {
                  startTime: String?,
                  available: Int?,
                  isDriver: Boolean,
-                 selectedLocation: LatLng?,
+                 selectedStartLocation: LatLng?,
+                 selectedEndLocation: LatLng?,
                  description: String?)
     }
 }

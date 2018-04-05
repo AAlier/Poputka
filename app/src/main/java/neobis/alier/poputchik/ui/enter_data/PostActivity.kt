@@ -1,15 +1,10 @@
 package neobis.alier.poputchik.ui.enter_data
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
-import android.text.format.DateFormat
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
-import android.widget.DatePicker
-import android.widget.TimePicker
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment
@@ -22,67 +17,72 @@ import neobis.alier.poputchik.util.Const.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PostActivity : BaseActivity(), PostContract.View{
+class PostActivity : BaseActivity(), PostContract.View, View.OnClickListener {
+
+    private var isDriver: Boolean = false
     private lateinit var presenter: PostPresenter
-    private var selectedLocation: LatLng? = null
+    private var selectedStartLocation: LatLng? = null
+    private var selectedEndLocation: LatLng? = null
+
     companion object {
         val TAG = "PostACtiviyt"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         init()
     }
 
-    private fun init() {
-        initPresenter()
-        sendBtn.setOnClickListener {
-            var available = 0
-//            if(isDriverSw.isChecked)
-            /*try {
-                available = free_place_control.editText?.text.toString().toInt()
-            } catch (e: NumberFormatException) {
-                e.printStackTrace()
-            }*/
-            presenter.post(
-                    name_control.editText?.text.toString(),
-                    phone_control.editText?.text.toString(),
-                    start_addrTxt.text.toString(),
-                    end_addr_control.text.toString(),
-                    start_timeTxt.text.toString(),
-                    available,
-                    false,
-                    selectedLocation,
-                    description_control.editText?.text.toString())
-        }
-
-       /* isDriverSw.setOnCheckedChangeListener { _, b ->
-            isDriverSw.text = getString(if (b) R.string.driver else R.string.rider)
-            free_view.visibility = if (b) View.VISIBLE else View.GONE
-        }*/
-
-        start_addrTxt.setOnClickListener {
-            val intent = Intent(this, PickAddressActivity::class.java)
-            intent.putExtra("name", start_addrTxt.text.toString())
-            intent.putExtra("location", selectedLocation)
-            startActivityForResult(intent, MAP_START)
-        }
-        end_addr_control.setOnClickListener{
-            val intent = Intent(this, PickAddressActivity::class.java)
-            intent.putExtra("name", end_addr_control.text.toString())
-            intent.putExtra("location", selectedLocation)
-            startActivityForResult(intent, MAP_END)
-        }
-        start_timeTxt.setOnClickListener { v ->
-            showCalendarPicker(getString(R.string.msg_set_data))
+    override fun onClick(v: View?) {
+        when (v) {
+            sendBtn -> sendData()
+            start_addrTxt -> goToMap(start_addrTxt.text.toString(), MAP_START, selectedStartLocation)
+            end_addr_control -> goToMap(end_addr_control.text.toString(), MAP_END, selectedEndLocation)
+            start_timeTxt -> showCalendarPicker(getString(R.string.msg_set_data))
+            rider_check -> setUser(false)
+            driver_check -> setUser(true)
         }
 
     }
 
+    private fun setUser(isDriver: Boolean){
+        this.isDriver = isDriver
+        if (isDriver){
+            driver_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            rider_check.setTextColor(ContextCompat.getColor(this, android.R.color.tertiary_text_light))
+        }else{
+            rider_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            driver_check.setTextColor(ContextCompat.getColor(this, android.R.color.tertiary_text_light))
+        }
+    }
 
-    private fun showCalendarPicker(title: String ) {
+    private fun init() {
+        initPresenter()
+        sendBtn.setOnClickListener(this)
+        start_addrTxt.setOnClickListener(this)
+        end_addr_control.setOnClickListener(this)
+        start_timeTxt.setOnClickListener(this)
+        rider_check.setOnClickListener(this)
+        driver_check.setOnClickListener(this)
+
+    }
+
+    fun sendData() {
+        var available = 0
+        presenter.post(name_control.editText?.text.toString(), phone_control.editText?.text.toString(),
+                start_addrTxt.text.toString(),
+                end_addr_control.text.toString(),
+                start_timeTxt.text.toString(),
+                available,
+                isDriver,
+                selectedStartLocation,
+                selectedEndLocation,
+                description_control.editText?.text.toString())
+    }
+
+    private fun showCalendarPicker(title: String) {
         // Initialize
         val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(title, "OK", "Cancel");
 
@@ -113,7 +113,7 @@ class PostActivity : BaseActivity(), PostContract.View{
         // Set listener
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date?) {
-                start_timeTxt.text = SimpleDateFormat("MMMM-dd-yyyy hh:mm", Locale.getDefault()).format(date?.time)
+                start_timeTxt.text = SimpleDateFormat("yyyy-MM-dd'T'hh:mm", Locale.getDefault()).format(date?.time)
             }
 
             override fun onNegativeButtonClick(date: Date?) {
@@ -137,17 +137,24 @@ class PostActivity : BaseActivity(), PostContract.View{
         showWarningMessage(message)
     }
 
+    fun goToMap(address: String, requestCode: Int, selectedLocation: LatLng?) {
+        val intent = Intent(this, PickAddressActivity::class.java)
+        intent.putExtra("name", address)
+        intent.putExtra("location", selectedLocation)
+        startActivityForResult(intent, requestCode)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 MAP_START -> {
                     start_addrTxt.text = data?.getStringExtra(Const.MAP_RESULT)
-                    selectedLocation = data?.extras?.get(Const.MAP_LOCATION) as LatLng
+                    selectedStartLocation = data?.extras?.get(Const.MAP_LOCATION) as LatLng
                 }
-                MAP_END-> {
+                MAP_END -> {
                     end_addr_control.text = data?.getStringExtra(Const.MAP_RESULT)
-                    selectedLocation = data?.extras?.get(Const.MAP_LOCATION) as LatLng
+                    selectedEndLocation = data?.extras?.get(Const.MAP_LOCATION) as LatLng
                 }
             }
         }

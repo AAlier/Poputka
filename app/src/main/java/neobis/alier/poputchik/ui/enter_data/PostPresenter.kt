@@ -8,7 +8,6 @@ import neobis.alier.poputchik.util.ForumService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 /**
  * Created by Alier on 03.04.2018.
@@ -23,14 +22,14 @@ class PostPresenter(val view: PostContract.View?,
                       startTime: String?,
                       available: Int?,
                       isDriver: Boolean,
-                      selectedLocation: LatLng?,
+                      selectedStartLocation: LatLng?,
+                      selectedEndLocation: LatLng?,
                       description: String?) {
 
-        if (check(name, phoneNum, startAddr, endAddr, startTime, selectedLocation, description)) {
-            val model = Info(null,
-                    name, phoneNum, isDriver, startAddr, endAddr,
-                    selectedLocation?.latitude,
-                    selectedLocation?.longitude,
+        if (check(name, phoneNum, startAddr, endAddr, startTime, selectedStartLocation, description)) {
+            val model = Info(null, name, phoneNum, isDriver, startAddr, endAddr,
+                    selectedStartLocation?.latitude, selectedStartLocation?.longitude,
+                    selectedEndLocation?.latitude, selectedEndLocation?.longitude,
                     startTime, description, available)
             request(model)
         }
