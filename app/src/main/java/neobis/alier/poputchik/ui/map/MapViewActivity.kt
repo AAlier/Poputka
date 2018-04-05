@@ -43,7 +43,6 @@ open class MapViewActivity : BaseActivity(),
         mMap!!.uiSettings.isZoomControlsEnabled = true
         mMap!!.uiSettings.isMyLocationButtonEnabled = true
         mMap!!.mapType = GoogleMap.MAP_TYPE_HYBRID
-
         // По умолчанию Ориентир Бишкек
         val startLatLng = LatLng(42.8746, 74.5698)
         val camPos = CameraPosition.Builder().target(startLatLng).zoom(12f).build()

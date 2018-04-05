@@ -19,7 +19,7 @@
     <string name="enter_available_place">Доступных мест</string>
     <string name="rider">Пешеход</string>
     <string name="driver">Водитель</string>
-    <string name="enter_place">Введите адресс</string>
+    <string name="enter_place">Введите адрес</string>
     <string name="next">Check</string>
     <string name="enter_descrip">Добавьте описание</string>
     <string name="add">Добавить</string>
@@ -30,5 +30,8 @@
     <string name="name">Имя: %s</string>
     <string name="available">Свободных мест: %d</string>
     <string name="filter">Фильтер</string>
+    <string name="msg_start">Укажите начало времени</string>
+    <string name="msg_end">Укажите конечное время</string>
+    <string name="msg_set_data">Укажите время отбытия</string>
 
 </resources>

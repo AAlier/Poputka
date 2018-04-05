@@ -85,7 +85,7 @@ class MapActivity : MapViewActivity(), MapContract.View {
 
     override fun onResume() {
         super.onResume()
-        reload()
+        //reload()
         Log.i(TAG, "Resume is called")
     }
 }

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="year">1</integer>
-    <integer name="month">2</integer>
-    <integer name="day">3</integer>
-    <integer name="hour">4</integer>
-    <integer name="minute">5</integer>
-    <integer name="date">6</integer>
-</resources>

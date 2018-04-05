@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true">
 
     <LinearLayout
@@ -15,27 +16,34 @@
 
         <TextView
             android:id="@+id/name"
+            tools:text="@string/app_name"
             style="@style/CustomTextLayout" />
 
         <TextView
             android:id="@+id/time"
+            tools:text="@string/app_name"
+
             style="@style/CustomTextLayout" />
 
         <TextView
+            tools:text="@string/app_name"
             android:id="@+id/from"
             style="@style/CustomTextLayout" />
 
         <TextView
+            tools:text="@string/app_name"
             android:id="@+id/toWhere"
             style="@style/CustomTextLayout" />
 
         <TextView
+            tools:text="@string/app_name"
             android:id="@+id/description"
             style="@style/CustomTextLayout" />
-
+<!--
         <TextView
+            tools:text="@string/app_name"
             android:id="@+id/availablePlace"
-            style="@style/CustomTextLayout" />
+            style="@style/CustomTextLayout" />-->
 
         <Button
             android:id="@+id/call"

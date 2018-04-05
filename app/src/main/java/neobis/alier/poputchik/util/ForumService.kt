@@ -18,7 +18,7 @@ interface ForumService {
     @POST("all/")
     fun postData(@Body data: Info): Call<Info>
 
-    @GET("filter/?start=2018-12-28T12:30&end=2019-12-28T13:30&type=drivers")
+    @GET("filter/")
     fun filter(@Query("start") start: String,
                @Query("end") end: String,
                @Query("type") type: String): Call<MutableList<Info>>

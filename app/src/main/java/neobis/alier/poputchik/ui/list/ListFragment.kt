@@ -57,7 +57,7 @@ class ListFragment : Fragment(), MapContract.View {
 
     override fun onResume() {
         super.onResume()
-        retry()
+        // retry()
     }
 
     private fun initRecyclerView() {
@@ -122,14 +122,14 @@ class ListFragment : Fragment(), MapContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.filter) {
-            showCalendarPicker()
+            showCalendarPicker(resources.getString(R.string.msg_start))
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showCalendarPicker() {
+    private fun showCalendarPicker(title: String ) {
         // Initialize
-        val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance("Title example", "OK", "Cancel");
+        val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(title, "OK", "Cancel");
 
         val cal = Calendar.getInstance()
         // Assign values
@@ -159,15 +159,15 @@ class ListFragment : Fragment(), MapContract.View {
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date?) {
                 val type = arguments.getBoolean("isDriver", false)
-                val formatter = SimpleDateFormat("", Locale.getDefault())
+                val formatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm", Locale.getDefault())
                 if (!TextUtils.isEmpty(startTime)) {
                     presenter.filterBy(startTime,
                             formatter.format(date?.time),
-                            if (type) "driver" else "rider")
+                            if (type) "drivers" else "rider")
                     startTime = null
                 }else{
                     startTime = formatter.format(date?.time)
-                    showCalendarPicker()
+                    showCalendarPicker(resources.getString(R.string.msg_end))
                 }
             }
 
