@@ -45,10 +45,6 @@ class DetailActivity : BaseActivity() {
             description.visibility = View.VISIBLE
             description.text = getString(R.string.descr, model.description)
         } else description.visibility = View.GONE
-        /*if (model.available_places != null) {
-            availablePlace.visibility = View.VISIBLE
-            availablePlace.text = getString(R.string.available, model.available_places)
-        } else availablePlace.visibility = View.GONE*/
 
         if (!TextUtils.isEmpty(model.phone)) {
             call.visibility = View.VISIBLE

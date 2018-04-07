@@ -69,8 +69,8 @@ class PostActivity : BaseActivity(), PostContract.View, View.OnClickListener {
 
     }
 
-    fun sendData() {
-        var available = 0
+    private fun sendData() {
+        val available = 0
         presenter.post(name_control.editText?.text.toString(), phone_control.editText?.text.toString(),
                 start_addrTxt.text.toString(),
                 end_addr_control.text.toString(),
@@ -107,7 +107,7 @@ class PostActivity : BaseActivity(), PostContract.View, View.OnClickListener {
         try {
             dateTimeFragment.simpleDateMonthAndDayFormat = SimpleDateFormat("dd MMMM", Locale.getDefault());
         } catch (e: SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException) {
-            Log.e(TAG, e.message);
+            Log.e(TAG, e.message)
         }
 
         // Set listener

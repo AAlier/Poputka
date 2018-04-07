@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.item_list.view.*
 import neobis.alier.poputchik.R
 import neobis.alier.poputchik.model.Info
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Created by Alier on 03.04.2018.
@@ -31,7 +29,7 @@ class ListAdapter(private var list: MutableList<Info>,
     }
 
     fun setList(newList: MutableList<Info>) {
-        this.list = newList;
+        this.list = newList
         notifyDataSetChanged()
     }
 
@@ -44,15 +42,13 @@ class ListAdapter(private var list: MutableList<Info>,
             itemView.call.setOnClickListener { v ->
                 val phone = v.tag as? String?
                 if (!TextUtils.isEmpty(phone))
-                    listener.onCallUser(phone!!
-                    )
+                    listener.onCallUser(phone!!)
             }
             itemView.call.tag = model.phone
-
             itemView.parentView.tag = model
             itemView.parentView.setOnClickListener { v ->
                 val tag = v.tag as? Info?
-                if(tag != null){
+                if (tag != null) {
                     listener.onClick(model)
                 }
             }

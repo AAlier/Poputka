@@ -20,7 +20,7 @@ class PickAddressPresenter(val view: PickAddrContact.View?,
             val data = geocoder.getFromLocation(latLng!!.latitude, latLng.longitude, 1)
             var currentAddress = ""
             if (data.size > 0) {
-                for (i in 0 until data.get(0).getMaxAddressLineIndex()) {
+                for (i in 0 until data.get(0).maxAddressLineIndex) {
                     currentAddress += data.get(0).getAddressLine(i) + if (i == 0) "\n" else " "
                 }
                 if (TextUtils.isEmpty(currentAddress) && data.get(0).getAddressLine(0) != null)

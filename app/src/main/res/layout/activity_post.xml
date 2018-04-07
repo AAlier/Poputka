@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -245,21 +246,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@color/colorPrimary"
                         android:text="@string/rider"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimary" />
+
                     <View
-                        android:layout_width="3dp"
                         style="@style/BTN"
-                        android:layout_height="match_parent"/>
+                        android:layout_width="3dp"
+                        android:layout_height="match_parent" />
+
                     <TextView
                         android:id="@+id/driver_check"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:textColor="@android:color/tertiary_text_light"
                         android:text="@string/driver"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@android:color/tertiary_text_light" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

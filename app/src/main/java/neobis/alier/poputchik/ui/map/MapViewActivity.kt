@@ -18,8 +18,7 @@ import neobis.alier.poputchik.ui.DetailActivity
 import neobis.alier.poputchik.util.Permissions
 import java.util.*
 
-open class MapViewActivity : BaseActivity(),
-        OnMapReadyCallback,
+open class MapViewActivity : BaseActivity(), OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMapClickListener {
     protected var mMap: GoogleMap? = null
 
