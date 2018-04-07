@@ -1,10 +1,12 @@
 package neobis.alier.poputchik.ui.enter_data
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment
@@ -50,14 +52,25 @@ class PostActivity : BaseActivity(), PostContract.View, View.OnClickListener {
     private fun setUser(isDriver: Boolean){
         this.isDriver = isDriver
         if (isDriver){
-            driver_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            setTextStyle(driver_check, rider_check  )
+            /*driver_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            driver_check.typeface = Typeface.DEFAULT_BOLD
             rider_check.setTextColor(ContextCompat.getColor(this, android.R.color.tertiary_text_light))
+            rider_check.typeface = Typeface.DEFAULT*/
         }else{
-            rider_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            setTextStyle(rider_check, driver_check)
+            /*rider_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            rider_check.typeface = Typeface.DEFAULT_BOLD
             driver_check.setTextColor(ContextCompat.getColor(this, android.R.color.tertiary_text_light))
+            rider_check.typeface = Typeface.DEFAULT*/
         }
     }
-
+    private fun setTextStyle(checked: TextView, unchecked: TextView){
+        checked.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        checked.typeface = Typeface.DEFAULT_BOLD
+        unchecked.setTextColor(ContextCompat.getColor(this, android.R.color.tertiary_text_light))
+        unchecked.typeface = Typeface.DEFAULT
+    }
     private fun init() {
         initPresenter()
         sendBtn.setOnClickListener(this)

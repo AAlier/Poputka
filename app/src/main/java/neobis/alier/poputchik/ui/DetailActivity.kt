@@ -8,6 +8,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_detail.*
 import neobis.alier.poputchik.R
 import neobis.alier.poputchik.model.Info
+import neobis.alier.poputchik.util.FileUtils
 
 /**
  * Created by Alier on 03.04.2018.
@@ -30,7 +31,7 @@ class DetailActivity : BaseActivity() {
             name.visibility = View.GONE
         }
         if (!TextUtils.isEmpty(model.start_time)) {
-            time.text = getString(R.string.time, model.start_time)
+            time.text = getString(R.string.time, FileUtils.convertStringToDate(model.start_time))
             time.visibility = View.VISIBLE
         } else time.visibility = View.GONE
         if (!TextUtils.isEmpty(model.start_address)) {

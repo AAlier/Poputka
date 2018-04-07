@@ -1,5 +1,8 @@
 package neobis.alier.poputchik.ui.list
 
+import android.icu.text.SimpleDateFormat
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -8,6 +11,8 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.item_list.view.*
 import neobis.alier.poputchik.R
 import neobis.alier.poputchik.model.Info
+import neobis.alier.poputchik.util.FileUtils
+import java.text.ParseException
 
 /**
  * Created by Alier on 03.04.2018.
@@ -35,7 +40,7 @@ class ListAdapter(private var list: MutableList<Info>,
 
     inner class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         fun bind(model: Info) {
-            itemView.time.text = itemView.context.getString(R.string.time, model.start_time)
+            itemView.time.text = itemView.context.getString(R.string.time, FileUtils.convertStringToDate(model.start_time))
             itemView.from.text = itemView.context.getString(R.string.start_addr, model.start_address)
             itemView.toWhere.text = itemView.context.getString(R.string.end_addr, model.end_address)
 
@@ -54,6 +59,7 @@ class ListAdapter(private var list: MutableList<Info>,
             }
         }
     }
+
 
     interface Listener {
         fun onClick(model: Info?)

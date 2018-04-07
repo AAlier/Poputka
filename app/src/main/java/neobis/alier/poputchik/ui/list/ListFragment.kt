@@ -39,7 +39,7 @@ class ListFragment : Fragment(), MapContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        this.setHasOptionsMenu(true);
+        this.setHasOptionsMenu(true)
         return inflater!!.inflate(R.layout.activity_list, container, false)
     }
 

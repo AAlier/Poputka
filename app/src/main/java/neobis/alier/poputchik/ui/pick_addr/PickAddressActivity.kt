@@ -3,7 +3,6 @@ package neobis.alier.poputchik.ui.pick_addr
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.text.TextUtils
@@ -20,14 +19,12 @@ import neobis.alier.poputchik.ui.map.MapViewActivity
 import neobis.alier.poputchik.util.Const.MAP_LOCATION
 import neobis.alier.poputchik.util.Const.MAP_RESULT
 import java.util.*
-import android.widget.Toast
 import com.google.android.gms.maps.model.*
-import java.io.IOException
 
 
 class PickAddressActivity : MapViewActivity(), PickAddrContact.View {
 
-    private lateinit var presenter: PickAddressPresenter
+    private lateinit var mPresenter: PickAddressPresenter
     private var mAdapter: PlaceAutoCompleteAdapter? = null
     private var mGoogleApiClient: GoogleApiClient? = null
     private var startLocation = LatLng(42.8746, 74.5698)
@@ -49,32 +46,14 @@ class PickAddressActivity : MapViewActivity(), PickAddrContact.View {
     }
 
     private fun initPresenter() {
-        presenter = PickAddressPresenter(this, Geocoder(this, Locale.getDefault()))
+        mPresenter = PickAddressPresenter(this, Geocoder(this, Locale.getDefault()))
     }
 
     override fun onMapClick(latLng: LatLng?) {
         super.onMapClick(latLng)
         moveMap(latLng)
-        presenter.getAddress(latLng)
-//        getAddressFromLocation(latLng!!)
+        mPresenter.getAddress(latLng)
     }
-
-/*
-    private fun getAddressFromLocation(point: LatLng) {
-
-        val geocoder = Geocoder(this, Locale.getDefault())
-        val addresses = geocoder.getFromLocation(point.latitude, point.longitude, 1) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-        if(addresses.isNotEmpty()) {
-            val address = addresses[0].getAddressLine(0)
-            val city = addresses[0].locality
-            val state = addresses[0].adminArea
-
-            Toast.makeText(this, "" + point.latitude + point.longitude, Toast.LENGTH_LONG).show()
-            place_autocomplete_input.setText(address + ", " + city + ", " + state)
-        }
-    }
-*/
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_check, menu)
@@ -145,7 +124,7 @@ class PickAddressActivity : MapViewActivity(), PickAddrContact.View {
     private fun initAutoComplete() {
         if (mGoogleApiClient != null) {
             place_autocomplete_input.setOnItemClickListener({ parent, view, position, id ->
-                presenter.getPlaces(mAdapter?.getItem(position)!!, mGoogleApiClient!!)
+                mPresenter.getPlaces(mAdapter?.getItem(position)!!, mGoogleApiClient!!)
             })
             mAdapter = PlaceAutoCompleteAdapter(this, mGoogleApiClient, null, null)
             place_autocomplete_input.setAdapter(mAdapter)

@@ -22,9 +22,13 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import neobis.alier.poputchik.model.Info;
 
@@ -34,6 +38,30 @@ public class FileUtils {
         if (uri != null && uri.toString().contains("content:"))
             return Uri.fromFile(FileUtils.getPath(context, uri, MediaStore.Images.Media.DATA));
         else return uri;
+    }
+
+    /*public static String convertStringToDate(String stringDate) throws ParseException {
+
+        Date convertedDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ", Locale.getDefault()).format(convertedDate.getTime());
+        try {
+            convertedDate = dateFormat.parse(stringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return convertedDate.toString();
+    }*/
+
+    public static String convertStringToDate(String dateString){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ", Locale.getDefault());
+        try {
+            Date date =  dateFormat.parse(dateString);
+            return new SimpleDateFormat("dd-MM-yyyy, hh:mm", Locale.getDefault()).format(date.getTime());
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static File getPath(Context context, Uri uri, String column) {
