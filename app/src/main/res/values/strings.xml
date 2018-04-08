@@ -33,5 +33,7 @@
     <string name="msg_start">Укажите начало времени</string>
     <string name="msg_end">Укажите конечное время</string>
     <string name="msg_set_data">Укажите время отбытия</string>
+    <string name="from_time">От: %s</string>
+    <string name="to_time">До: %s</string>
 
 </resources>

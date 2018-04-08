@@ -3,6 +3,7 @@ package neobis.alier.poputchik.ui.map
 import android.content.Context
 import android.text.TextUtils
 import neobis.alier.poputchik.model.Info
+import neobis.alier.poputchik.util.Client
 import neobis.alier.poputchik.util.Const
 import neobis.alier.poputchik.util.FileUtils
 import neobis.alier.poputchik.util.ForumService
@@ -23,7 +24,7 @@ class MapPresenter(val view: MapContract.View?,
                 if (isViewAttached()) {
                     if (response!!.isSuccessful && response.body() != null) {
                         FileUtils.writeCache(context, Const.DIR_DRIVER, response.body())
-                        view!!.onLoadList(response.body()!!, true)
+                        view!!.onLoadList(response.body()!!, Client.DRIVER)
                     } else
                         view!!.onResumeError(Const.ERROR_LOAD)
                     view.hideProgress()
@@ -49,7 +50,7 @@ class MapPresenter(val view: MapContract.View?,
                 if (isViewAttached()) {
                     if (response!!.isSuccessful && response.body() != null) {
                         FileUtils.writeCache(context, Const.DIR_RIDER, response.body())
-                        view!!.onLoadList(response.body()!!, false)
+                        view!!.onLoadList(response.body()!!, Client.RIDER)
                     } else
                         view!!.onResumeError(Const.ERROR_LOAD)
                     view.hideProgress()
@@ -81,7 +82,7 @@ class MapPresenter(val view: MapContract.View?,
                 override fun onResponse(call: Call<MutableList<Info>>?, response: Response<MutableList<Info>>?) {
                     if(isViewAttached()){
                         if(response!!.isSuccessful && response.body() != null){
-                            view!!.onLoadList(response.body()!!, type == "drivers")
+                            view!!.onLoadList(response.body()!!, Client.DRIVER)
                         }else{
                             view!!.onResumeError(Const.ERROR_LOAD)
                         }

@@ -16,6 +16,7 @@ import neobis.alier.poputchik.ui.BaseActivity
 import neobis.alier.poputchik.ui.pick_addr.PickAddressActivity
 import neobis.alier.poputchik.util.Const
 import neobis.alier.poputchik.util.Const.*
+import neobis.alier.poputchik.util.FileUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,16 +54,8 @@ class PostActivity : BaseActivity(), PostContract.View, View.OnClickListener {
         this.isDriver = isDriver
         if (isDriver){
             setTextStyle(driver_check, rider_check  )
-            /*driver_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            driver_check.typeface = Typeface.DEFAULT_BOLD
-            rider_check.setTextColor(ContextCompat.getColor(this, android.R.color.tertiary_text_light))
-            rider_check.typeface = Typeface.DEFAULT*/
         }else{
             setTextStyle(rider_check, driver_check)
-            /*rider_check.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            rider_check.typeface = Typeface.DEFAULT_BOLD
-            driver_check.setTextColor(ContextCompat.getColor(this, android.R.color.tertiary_text_light))
-            rider_check.typeface = Typeface.DEFAULT*/
         }
     }
     private fun setTextStyle(checked: TextView, unchecked: TextView){

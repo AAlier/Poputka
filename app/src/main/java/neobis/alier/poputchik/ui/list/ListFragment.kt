@@ -14,8 +14,10 @@ import kotlinx.android.synthetic.main.activity_list.*
 import neobis.alier.poputchik.R
 import neobis.alier.poputchik.model.Info
 import neobis.alier.poputchik.ui.DetailActivity
+import neobis.alier.poputchik.ui.FilterActivity
 import neobis.alier.poputchik.ui.map.MapContract
 import neobis.alier.poputchik.ui.map.MapPresenter
+import neobis.alier.poputchik.util.Client
 import neobis.alier.poputchik.util.Const
 import neobis.alier.poputchik.util.FileUtils
 import java.text.SimpleDateFormat
@@ -29,13 +31,15 @@ class ListFragment : Fragment(), MapContract.View {
     private var startTime: String? = null
 
     companion object {
-        fun getInstance(isDriver: Boolean): ListFragment {
+        fun getInstance(type: Client): ListFragment {
             val bundle = Bundle()
-            bundle.putBoolean("isDriver", isDriver)
+            bundle.putSerializable("type_client", type)
             val fragment = ListFragment()
             fragment.arguments = bundle
             return fragment
         }
+
+        val CLIENT_TYPE: String = "type_client"
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,14 +83,18 @@ class ListFragment : Fragment(), MapContract.View {
     }
 
     private fun retry() {
-        val type = arguments.getBoolean("isDriver", false)
-        if (type) presenter.loadDrivers() else presenter.loadRiders()
+        val type = arguments.getSerializable(CLIENT_TYPE) as? Client ?: Client.DRIVER
+        if (type == Client.DRIVER) presenter.loadDrivers() else presenter.loadRiders()
     }
 
     private fun loadList() {
-        val type = arguments.getBoolean("isDriver", false)
-        val list = FileUtils.readCache(context, if (type) Const.DIR_DRIVER else Const.DIR_RIDER)
-        onLoadList(list, type)
+        val type = arguments.getSerializable(CLIENT_TYPE) as? Client ?: Client.DRIVER
+        val list = FileUtils.readCache(context, if (type == Client.DRIVER) Const.DIR_DRIVER else Const.DIR_RIDER)
+        if (list != null) {
+            onLoadList(list, type)
+        } else {
+            retry()
+        }
     }
 
     override fun showProgress() {
@@ -97,7 +105,7 @@ class ListFragment : Fragment(), MapContract.View {
         refreshLayout?.isRefreshing = false
     }
 
-    override fun onLoadList(list: MutableList<Info>, isDriver: Boolean) {
+    override fun onLoadList(list: MutableList<Info>, type: Client) {
         if (list.size > 0) {
             adapter.setList(list)
             empty_view.visibility = View.GONE
@@ -122,12 +130,15 @@ class ListFragment : Fragment(), MapContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.filter) {
-            showCalendarPicker(resources.getString(R.string.msg_start))
+//            showCalendarPicker(resources.getString(R.string.msg_start))
+            val intent: Intent = Intent(activity, FilterActivity::class.java)
+//            intent.putExtra(CLIENT_TYPE, Client.DRIVER)
+            startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showCalendarPicker(title: String ) {
+/*    private fun showCalendarPicker(title: String ) {
         // Initialize
         val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(title, "OK", "Cancel");
 
@@ -177,5 +188,5 @@ class ListFragment : Fragment(), MapContract.View {
         })
         // Show
         dateTimeFragment.show(childFragmentManager, "dialog_time");
-    }
+    }*/
 }

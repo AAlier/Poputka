@@ -1,11 +1,13 @@
 package neobis.alier.poputchik.ui.pick_addr
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -20,6 +22,12 @@ import neobis.alier.poputchik.util.Const.MAP_LOCATION
 import neobis.alier.poputchik.util.Const.MAP_RESULT
 import java.util.*
 import com.google.android.gms.maps.model.*
+import android.location.LocationManager
+import com.google.android.gms.maps.model.LatLng
+
+
+
+
 
 
 class PickAddressActivity : MapViewActivity(), PickAddrContact.View {
@@ -51,6 +59,7 @@ class PickAddressActivity : MapViewActivity(), PickAddrContact.View {
 
     override fun onMapClick(latLng: LatLng?) {
         super.onMapClick(latLng)
+        Log.d("TEST_LATLNG", latLng!!.latitude.toString() + "" + latLng.longitude.toString())
         moveMap(latLng)
         mPresenter.getAddress(latLng)
     }
@@ -93,6 +102,7 @@ class PickAddressActivity : MapViewActivity(), PickAddrContact.View {
 
     override fun setAddress(address: String) {
         place_autocomplete_input.setText(address)
+
     }
 
     private fun setPickedAddress(address: String) {
@@ -129,5 +139,18 @@ class PickAddressActivity : MapViewActivity(), PickAddrContact.View {
             mAdapter = PlaceAutoCompleteAdapter(this, mGoogleApiClient, null, null)
             place_autocomplete_input.setAdapter(mAdapter)
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onMyLocationButtonClick(): Boolean {
+        // instantiate the location manager, note you will need to request permissions in your manifest
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        // get the last know location from your location manager.
+        val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        // now get the lat/lon from the location and do something with it.
+        val latlng = LatLng(location.latitude, location.longitude)
+        moveMap(latlng)
+        mPresenter.getAddress(latlng)
+        return super.onMyLocationButtonClick()
     }
 }

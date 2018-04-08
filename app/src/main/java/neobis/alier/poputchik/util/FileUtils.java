@@ -40,25 +40,12 @@ public class FileUtils {
         else return uri;
     }
 
-    /*public static String convertStringToDate(String stringDate) throws ParseException {
-
-        Date convertedDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ", Locale.getDefault()).format(convertedDate.getTime());
-        try {
-            convertedDate = dateFormat.parse(stringDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return convertedDate.toString();
-    }*/
-
-    public static String convertStringToDate(String dateString){
+    public static String convertStringToDate(String dateString) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ", Locale.getDefault());
         try {
-            Date date =  dateFormat.parse(dateString);
+            Date date = dateFormat.parse(dateString);
             return new SimpleDateFormat("dd-MM-yyyy, hh:mm", Locale.getDefault()).format(date.getTime());
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;

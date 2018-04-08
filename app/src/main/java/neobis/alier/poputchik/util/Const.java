@@ -14,6 +14,8 @@ public class Const {
     public static final String DIR_DRIVER = "drivers";
     public static final String DIR_RIDER = "rider";
 
+
+
     public static final String MAP_RESULT = "map_result";
     public static final String MAP_LOCATION = "location";
 

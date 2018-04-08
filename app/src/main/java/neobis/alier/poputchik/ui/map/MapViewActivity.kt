@@ -15,6 +15,7 @@ import neobis.alier.poputchik.R
 import neobis.alier.poputchik.model.Info
 import neobis.alier.poputchik.ui.BaseActivity
 import neobis.alier.poputchik.ui.DetailActivity
+import neobis.alier.poputchik.util.Client
 import neobis.alier.poputchik.util.Permissions
 import java.util.*
 
@@ -41,12 +42,12 @@ open class MapViewActivity : BaseActivity(), OnMapReadyCallback,
         mMap!!.mapType = GoogleMap.MAP_TYPE_NORMAL
         mMap!!.uiSettings.isZoomControlsEnabled = true
         mMap!!.uiSettings.isMyLocationButtonEnabled = true
-        mMap!!.mapType = GoogleMap.MAP_TYPE_HYBRID
+        mMap!!.mapType = GoogleMap.MAP_TYPE_NORMAL
         // По умолчанию Ориентир Бишкек
         val startLatLng = LatLng(42.8746, 74.5698)
-        val camPos = CameraPosition.Builder().target(startLatLng).zoom(12f).build()
+        val camPos = CameraPosition.Builder().target(startLatLng).zoom(13f).build()
         mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(camPos))
-
+        mMap!!.setOnMyLocationButtonClickListener(this)
         if (Permissions.iPermissionLocation(this))
             setMyLocationEnable()
         mMap!!.setOnMapClickListener(this)
@@ -79,16 +80,16 @@ open class MapViewActivity : BaseActivity(), OnMapReadyCallback,
         }
     }
 
-    protected fun drawList(list: MutableList<Info>, isDriver: Boolean) {
+    protected fun drawList(list: MutableList<Info>, type: Client) {
         if (mMap != null) {
             list.forEach { data ->
                 if (data.start_latitude != null && data.start_longitude != null) {
-                    val latLng = LatLng(42.8746 + randomWithRange(0.0, 0.02), 74.5698 + randomWithRange(0.0, .02))
-                    //LatLng(data.start_latitude!!, data.start_longitude!!)
+//                    val latLng = LatLng(42.8746 + randomWithRange(0.0, 0.02), 74.5698 + randomWithRange(0.0, .02))
+                    val latLng = LatLng(data.start_latitude!!, data.start_longitude!!)
                     mMap!!.addMarker(MarkerOptions()
                             .title(data.name)
                             .snippet(data.phone)
-                            .icon(BitmapDescriptorFactory.fromResource(getBitmap(isDriver)))
+                            .icon(BitmapDescriptorFactory.fromResource(getBitmap(type==Client.DRIVER )))
                             .anchor(0.0f, 1.0f)
                             .position(latLng)).tag = data
                 }
