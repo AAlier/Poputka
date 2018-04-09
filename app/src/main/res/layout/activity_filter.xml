@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="32dp"
+    android:paddingTop="32dp"
     tools:context="neobis.alier.poputchik.ui.FilterActivity">
+
     <TextView
         android:id="@+id/tvFromTimeFilter"
-        android:text="@string/from_time"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/from_time" />
+
     <TextView
         android:id="@+id/tvToTimeFilter"
-        android:text="@string/to_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to_time" />
+    <Button
+        android:id="@+id/btFilter"
+        style="@style/BTN"
+        android:text="@string/filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <fragment
-        android:id="@+id/fragment_container"
+
+    <FrameLayout
+        android:id="@+id/filtered_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvFilteredList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </FrameLayout>
 </LinearLayout>

@@ -28,7 +28,7 @@ class PostActivity : BaseActivity(), PostContract.View, View.OnClickListener {
     private var selectedEndLocation: LatLng? = null
 
     companion object {
-        val TAG = "PostACtiviyt"
+        val TAG = "PostActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

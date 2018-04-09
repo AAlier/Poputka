@@ -29,17 +29,18 @@ class ListFragment : Fragment(), MapContract.View {
     private lateinit var adapter: ListAdapter
     val TAG = "LIST FRAGMENT"
     private var startTime: String? = null
+    var type: Client = Client.RIDER
 
     companion object {
         fun getInstance(type: Client): ListFragment {
             val bundle = Bundle()
-            bundle.putSerializable("type_client", type)
+            bundle.putSerializable(CLIENT_TYPE, type)
             val fragment = ListFragment()
             fragment.arguments = bundle
             return fragment
         }
 
-        val CLIENT_TYPE: String = "type_client"
+        const val CLIENT_TYPE: String = "type_client"
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,7 +62,7 @@ class ListFragment : Fragment(), MapContract.View {
 
     override fun onResume() {
         super.onResume()
-        // retry()
+        retry()
     }
 
     private fun initRecyclerView() {
@@ -88,7 +89,11 @@ class ListFragment : Fragment(), MapContract.View {
     }
 
     private fun loadList() {
-        val type = arguments.getSerializable(CLIENT_TYPE) as? Client ?: Client.DRIVER
+        var type: Client = Client.DRIVER
+        if (arguments != null) {
+            type = arguments.getSerializable(CLIENT_TYPE) as? Client ?: Client.DRIVER
+        }
+
         val list = FileUtils.readCache(context, if (type == Client.DRIVER) Const.DIR_DRIVER else Const.DIR_RIDER)
         if (list != null) {
             onLoadList(list, type)
@@ -138,7 +143,7 @@ class ListFragment : Fragment(), MapContract.View {
         return super.onOptionsItemSelected(item)
     }
 
-/*    private fun showCalendarPicker(title: String ) {
+    private fun showCalendarPicker(title: String) {
         // Initialize
         val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(title, "OK", "Cancel");
 
@@ -146,10 +151,12 @@ class ListFragment : Fragment(), MapContract.View {
         // Assign values
         dateTimeFragment.startAtCalendarView();
         dateTimeFragment.set24HoursMode(true);
-        dateTimeFragment.minimumDateTime = GregorianCalendar(cal.get(Calendar.YEAR),
+        dateTimeFragment.minimumDateTime = GregorianCalendar(
+                cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).time;
-        dateTimeFragment.maximumDateTime = GregorianCalendar(cal.get(Calendar.YEAR) + 1,
+        dateTimeFragment.maximumDateTime = GregorianCalendar(
+                cal.get(Calendar.YEAR) + 1,
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).time;
 
@@ -169,14 +176,14 @@ class ListFragment : Fragment(), MapContract.View {
         // Set listener
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date?) {
-                val type = arguments.getBoolean("isDriver", false)
+                val type = arguments.getSerializable(CLIENT_TYPE) as? Client ?: Client.DRIVER
                 val formatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm", Locale.getDefault())
                 if (!TextUtils.isEmpty(startTime)) {
                     presenter.filterBy(startTime,
                             formatter.format(date?.time),
-                            if (type) "drivers" else "rider")
+                            if (type == Client.DRIVER) "drivers" else "rider")
                     startTime = null
-                }else{
+                } else {
                     startTime = formatter.format(date?.time)
                     showCalendarPicker(resources.getString(R.string.msg_end))
                 }
@@ -188,5 +195,14 @@ class ListFragment : Fragment(), MapContract.View {
         })
         // Show
         dateTimeFragment.show(childFragmentManager, "dialog_time");
-    }*/
+    }
+
+    fun refresh() {
+        val list = FileUtils.readCache(context, if (type == Client.DRIVER) Const.DIR_DRIVER else Const.DIR_RIDER)
+        if (list != null) {
+            onLoadList(list, type)
+        } else {
+            retry()
+        }
+    }
 }

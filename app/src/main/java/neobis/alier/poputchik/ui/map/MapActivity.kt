@@ -93,7 +93,6 @@ class MapActivity : MapViewActivity(), MapContract.View {
     }
 
     override fun onMyLocationButtonClick(): Boolean {
-
-        return true
+        return super.onMyLocationButtonClick()
     }
 }

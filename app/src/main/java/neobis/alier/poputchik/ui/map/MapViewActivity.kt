@@ -84,7 +84,6 @@ open class MapViewActivity : BaseActivity(), OnMapReadyCallback,
         if (mMap != null) {
             list.forEach { data ->
                 if (data.start_latitude != null && data.start_longitude != null) {
-//                    val latLng = LatLng(42.8746 + randomWithRange(0.0, 0.02), 74.5698 + randomWithRange(0.0, .02))
                     val latLng = LatLng(data.start_latitude!!, data.start_longitude!!)
                     mMap!!.addMarker(MarkerOptions()
                             .title(data.name)
@@ -97,19 +96,8 @@ open class MapViewActivity : BaseActivity(), OnMapReadyCallback,
         }
     }
 
-    fun randomWithRange(min: Double, max: Double): Double {
-        val r = Random()
-        return min + (max - min) * r.nextDouble()
-    }
-
     private fun getBitmap(isDriver: Boolean): Int {
         return if (isDriver) R.mipmap.driver_marker else R.mipmap.rider_marker
-    }
-
-    protected fun clearMap() {
-        if (mMap != null) {
-            mMap!!.clear()
-        }
     }
 
     override fun onMyLocationButtonClick(): Boolean = true
