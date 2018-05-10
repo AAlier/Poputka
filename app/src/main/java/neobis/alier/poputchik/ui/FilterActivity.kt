@@ -6,12 +6,11 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment
 import kotlinx.android.synthetic.main.activity_filter.*
-import kotlinx.android.synthetic.main.activity_list.*
 import neobis.alier.poputchik.R
 import neobis.alier.poputchik.model.Info
 import neobis.alier.poputchik.ui.list.ListAdapter
@@ -19,40 +18,41 @@ import neobis.alier.poputchik.ui.list.ListFragment
 import neobis.alier.poputchik.ui.map.MapContract
 import neobis.alier.poputchik.ui.map.MapPresenter
 import neobis.alier.poputchik.util.Client
-import neobis.alier.poputchik.util.Const
-import neobis.alier.poputchik.util.FileUtils
 import java.text.SimpleDateFormat
 import java.util.*
-import android.widget.DatePicker
-import android.app.DatePickerDialog
-
 
 
 class FilterActivity : BaseActivity(), View.OnClickListener, MapContract.View {
 
     lateinit var adapter: ListAdapter
     lateinit var mPresenter: MapPresenter
-    var startTime: String =""
-    val TAG ="FilterActivity"
+    var startTime: String? = null
+    val TAG = "FilterActivity"
     override fun onClick(v: View?) {
         when (v) {
-            tvFromTimeFilter -> Toast.makeText(this, "1", Toast.LENGTH_LONG).show()
-            tvToTimeFilter -> Toast.makeText(this, "2", Toast.LENGTH_LONG).show()
+            tvFromTimeFilter -> {
+                showCalendarPicker(getString(R.string.msg_start), tvFromTimeFilter)
+            }
+            tvToTimeFilter -> {
+                showCalendarPicker(getString(R.string.msg_end), tvToTimeFilter)
+            }
             btFilter -> parseFragment()
         }
     }
 
     private fun parseFragment() {
-        var type: Client = Client.RIDER
-        val list = FileUtils.readCache(this, if (type == Client.DRIVER) Const.DIR_DRIVER else Const.DIR_RIDER)
-        adapter.setList(list)
+        var type: Client = intent.getSerializableExtra(ListFragment.CLIENT_TYPE) as? Client ?: Client.DRIVER
+        mPresenter.filterBy(tvFromTimeFilter.text.toString(), tvToTimeFilter.text.toString(),
+                "both"/*if (type == Client.DRIVER) "drivers" else "rider" */)
+//        val list = FileUtils.readCache(this, if (type == Client.DRIVER) Const.DIR_DRIVER else Const.DIR_RIDER)
+//        adapter.setList(list)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
         init()
-
     }
 
     fun init() {
@@ -70,21 +70,28 @@ class FilterActivity : BaseActivity(), View.OnClickListener, MapContract.View {
 
     private fun initToolbar() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        title = resources.getString(R.string.filter)
     }
 
     private fun initRecyclerView() {
-        rvFilteredList.layoutManager = LinearLayoutManager(this)
+        rvFilteredList.layoutManager = LinearLayoutManager(applicationContext)
         adapter = ListAdapter(ArrayList(), object : ListAdapter.Listener {
             override fun onClick(model: Info?) {
+                val intent = Intent(applicationContext, DetailActivity::class.java)
+                intent.putExtra("data", model)
+                startActivity(intent)
             }
 
             override fun onCallUser(phone: String) {
+                val phoneNum = Uri.fromParts("tel", phone, null)
+                val intent = Intent(Intent.ACTION_DIAL, phoneNum)
+                startActivity(intent)
             }
         })
-        recyclerView.adapter = adapter
+        rvFilteredList.adapter = adapter
     }
 
-    private fun showCalendarPicker(title: String) {
+    private fun showCalendarPicker(title: String, view: TextView) {
 
         val fm = supportFragmentManager
         // Initialize
@@ -119,17 +126,9 @@ class FilterActivity : BaseActivity(), View.OnClickListener, MapContract.View {
         // Set listener
         dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
             override fun onPositiveButtonClick(date: Date?) {
-                val type = intent.getSerializableExtra(ListFragment.CLIENT_TYPE) as? Client ?: Client.DRIVER
                 val formatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm", Locale.getDefault())
-                if (!TextUtils.isEmpty(startTime)) {
-                    mPresenter.filterBy(startTime,
-                            formatter.format(date?.time),
-                            if (type == Client.DRIVER) "drivers" else "rider")
-//                    startTime = null
-                } else {
-                    startTime = formatter.format(date?.time)
-                    showCalendarPicker(resources.getString(R.string.msg_end))
-                }
+                startTime = formatter.format(date?.time)
+                view.text = startTime
             }
 
             override fun onNegativeButtonClick(date: Date?) {
@@ -137,15 +136,22 @@ class FilterActivity : BaseActivity(), View.OnClickListener, MapContract.View {
             }
         })
         // Show
+
         dateTimeFragment.show(fm, "dialog_time");
+
     }
+
     override fun showProgress() {
+        showProgressBar()
+
     }
 
     override fun hideProgress() {
+        hideProgressBar()
     }
 
     override fun onLoadList(list: MutableList<Info>, type: Client) {
+        adapter.setList(list)
     }
 
     override fun onResumeError(message: String) {

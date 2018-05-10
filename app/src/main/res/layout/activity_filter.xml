@@ -5,36 +5,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="32dp"
+    android:padding="16dp"
     tools:context="neobis.alier.poputchik.ui.FilterActivity">
 
-    <TextView
-        android:id="@+id/tvFromTimeFilter"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/from_time" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvToTimeFilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/to_time" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="@dimen/margin_8"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/time_diapason" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/BTN"
+                    android:id="@+id/tvFromTimeFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/start_diapason" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_arrow" />
+
+                <TextView
+                    style="@style/BTN"
+                    android:id="@+id/tvToTimeFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/finish_diapason"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
     <Button
         android:id="@+id/btFilter"
         style="@style/BTN"
-        android:text="@string/filter"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/do_filter" />
 
     <FrameLayout
         android:id="@+id/filtered_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvFilteredList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent" />
     </FrameLayout>
 </LinearLayout>

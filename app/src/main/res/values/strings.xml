@@ -6,6 +6,7 @@
     <string name="request_setting_permissions">Вы отключили некоторые разрешения, включите их в настройках</string>
     <string name="call">Позвонить</string>
     <string name="show_list">Показать лист</string>
+    <string name="list">Список</string>
     <string name="drivers">Водители</string>
     <string name="riders">Пешеходы</string>
     <string name="no_data">Данных нет</string>
@@ -35,5 +36,9 @@
     <string name="msg_set_data">Укажите время отбытия</string>
     <string name="from_time">От: %s</string>
     <string name="to_time">До: %s</string>
+    <string name="do_filter">Отфильтровать</string>
+    <string name="time_diapason">Укажите диапазон времени:</string>
+    <string name="start_diapason">Начальное время</string>
+    <string name="finish_diapason">Конечное время</string>
 
 </resources>

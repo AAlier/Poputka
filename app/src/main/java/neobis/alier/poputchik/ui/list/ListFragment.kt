@@ -27,9 +27,9 @@ import java.util.*
 class ListFragment : Fragment(), MapContract.View {
     private lateinit var presenter: MapPresenter
     private lateinit var adapter: ListAdapter
-    val TAG = "LIST FRAGMENT"
     private var startTime: String? = null
     var type: Client = Client.RIDER
+    private val TAG = "ListFragment"
 
     companion object {
         fun getInstance(type: Client): ListFragment {
@@ -50,19 +50,27 @@ class ListFragment : Fragment(), MapContract.View {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
-        loadList()
-        val activity = activity as ListActivity
-        presenter = MapPresenter(this, activity.app.service, context)
+        init()
 
-        refreshLayout.setOnRefreshListener {
-            retry()
-        }
     }
 
     override fun onResume() {
         super.onResume()
         retry()
+    }
+
+    private fun init() {
+        initRecyclerView()
+        loadList()
+        initPresenter()
+        refreshLayout.setOnRefreshListener {
+            retry()
+        }
+    }
+
+    private fun initPresenter() {
+        val activity = activity as ListActivity
+        presenter = MapPresenter(this, activity.app.service, context)
     }
 
     private fun initRecyclerView() {
@@ -135,66 +143,11 @@ class ListFragment : Fragment(), MapContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.filter) {
-//            showCalendarPicker(resources.getString(R.string.msg_start))
-            val intent: Intent = Intent(activity, FilterActivity::class.java)
-//            intent.putExtra(CLIENT_TYPE, Client.DRIVER)
+            val intent = Intent(activity, FilterActivity::class.java)
+            intent.putExtra(CLIENT_TYPE, Client.DRIVER)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun showCalendarPicker(title: String) {
-        // Initialize
-        val dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(title, "OK", "Cancel");
-
-        val cal = Calendar.getInstance()
-        // Assign values
-        dateTimeFragment.startAtCalendarView();
-        dateTimeFragment.set24HoursMode(true);
-        dateTimeFragment.minimumDateTime = GregorianCalendar(
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)).time;
-        dateTimeFragment.maximumDateTime = GregorianCalendar(
-                cal.get(Calendar.YEAR) + 1,
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)).time;
-
-        dateTimeFragment.setDefaultDateTime(GregorianCalendar(cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH),
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE)).time);
-
-        // Define new day and month format
-        try {
-            dateTimeFragment.simpleDateMonthAndDayFormat = SimpleDateFormat("dd MMMM", Locale.getDefault());
-        } catch (e: SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException) {
-            Log.e(TAG, e.message);
-        }
-
-        // Set listener
-        dateTimeFragment.setOnButtonClickListener(object : SwitchDateTimeDialogFragment.OnButtonClickListener {
-            override fun onPositiveButtonClick(date: Date?) {
-                val type = arguments.getSerializable(CLIENT_TYPE) as? Client ?: Client.DRIVER
-                val formatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm", Locale.getDefault())
-                if (!TextUtils.isEmpty(startTime)) {
-                    presenter.filterBy(startTime,
-                            formatter.format(date?.time),
-                            if (type == Client.DRIVER) "drivers" else "rider")
-                    startTime = null
-                } else {
-                    startTime = formatter.format(date?.time)
-                    showCalendarPicker(resources.getString(R.string.msg_end))
-                }
-            }
-
-            override fun onNegativeButtonClick(date: Date?) {
-                startTime = null
-            }
-        })
-        // Show
-        dateTimeFragment.show(childFragmentManager, "dialog_time");
     }
 
     fun refresh() {

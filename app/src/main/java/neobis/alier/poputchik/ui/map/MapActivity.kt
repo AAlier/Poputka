@@ -58,6 +58,8 @@ class MapActivity : MapViewActivity(), MapContract.View {
         }
     }
 
+
+
     override fun onLoadList(list: MutableList<Info>, type: Client) {
         if (list.size > 0) {
             drawList(list, type)
@@ -88,11 +90,8 @@ class MapActivity : MapViewActivity(), MapContract.View {
 
     override fun onResume() {
         super.onResume()
-        //reload()
+        reload()
         Log.i(TAG, "Resume is called")
     }
 
-    override fun onMyLocationButtonClick(): Boolean {
-        return super.onMyLocationButtonClick()
-    }
 }

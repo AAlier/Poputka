@@ -58,4 +58,5 @@ open class BaseActivity : AppCompatActivity() {
         super.onDestroy()
         hideProgressBar()
     }
+
 }

@@ -15,9 +15,10 @@ class ListActivity : BaseActivity() {
         setContentView(R.layout.activity_tabs)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        title = resources.getString(R.string.list)
         adapter = ViewPagerAdapter(supportFragmentManager)
         viewpager.adapter = adapter
+
         adapter.addFragment(ListFragment.getInstance(Client.DRIVER), getString(R.string.drivers))
         adapter.addFragment(ListFragment.getInstance(Client.RIDER), getString(R.string.riders))
         tabs.setupWithViewPager(viewpager)

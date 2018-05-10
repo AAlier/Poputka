@@ -101,4 +101,5 @@ open class MapViewActivity : BaseActivity(), OnMapReadyCallback,
     }
 
     override fun onMyLocationButtonClick(): Boolean = true
+
 }
